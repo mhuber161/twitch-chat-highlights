@@ -10,10 +10,21 @@
 
   </div>
   <div>
-    Embedded Twitch Video Here
+    <iframe
+      [src]= {{ embedSrc }}
+      height="480"
+      width="854"
+      frameborder="30"
+      scrolling="no"
+      allowfullscreen="true">
+    </iframe>
+
   </div>
   <div>
-  Insert list of timestamps here!
-  {{ highlight }}
+    <ul class="highlightList">
+      <li *ngFor="let highlight of highlightList">
+        {{ highlight.score }}, {{highlight.videoId}}
+      </li>
+    </ul>
   </div>
 </div>

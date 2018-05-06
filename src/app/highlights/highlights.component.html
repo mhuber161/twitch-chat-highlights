@@ -11,7 +11,7 @@
   </div>
   <div>
     <iframe
-      [src]= {{ embedSrc }}
+      [src]= "vidSrc"
       height="480"
       width="854"
       frameborder="30"
@@ -23,7 +23,7 @@
   <div>
     <ul class="highlightList">
       <li *ngFor="let highlight of highlightList">
-        {{ highlight.score }}, {{highlight.videoId}}
+        {{ highlight.score }}, {{highlight.time}}, <button (click)="selectHighlight(highlight)">Load!</button>
       </li>
     </ul>
   </div>

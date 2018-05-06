@@ -3,6 +3,7 @@ import { HighlightList } from '../highlightList';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer} from '@angular/platform-browser';
 import {SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl} from '@angular/platform-browser';
+import { Highlight } from '../highlightClass';
 
 @Pipe({ name: 'safe' })
 export class SafePipe implements PipeTransform {
@@ -29,29 +30,48 @@ export class SafePipe implements PipeTransform {
 @Component({
   selector: 'app-highlights',
   templateUrl: './highlights.component.html',
+  // template: `
+  //    <iframe [src]="iframe"></iframe>
+  // `,
   styleUrls: ['./highlights.component.css']
 })
 export class HighlightsComponent implements OnInit {
 
-  embedVideoId = '257792165';
-  embedSrc = '\'http://player.twitch.tv/?video=v257792165\' | safe';
+  exampleVideoId = '257792165';
+  vidSrc; // binded to iframe src
+  embedUrlPrefix = 'http://player.twitch.tv/?video=v';
+  embedUrl;
+  sanitizer: DomSanitizer;
+  timestampPrefix = '&time=';
+
 
   // this should contain a list of links to highlights, data should come from highlights service
 
   highlightList = HighlightList;
 
-  constructor() {  }
+  constructor(private san: DomSanitizer) {
+    this.sanitizer = san;
+    this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl('http://player.twitch.tv');
+  }
 
   ngOnInit() {  }
 
 
+
   getVideo(videoId: string) {
     if (videoId.length > 0) {
-      // TODO: input verification
-      this.embedVideoId = videoId;
+      // TODO: input verification, must only contain characters 0-9
+      this.embedUrl = this.embedUrlPrefix + videoId;
+
+      this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.embedUrl);
       // Async have service check if chat log exists, if not pull it. Load embedded video.
       // Then process chat in the background
     }
+  }
+
+  selectHighlight(highlight: Highlight) {
+    this.embedUrl = this.embedUrlPrefix + highlight.videoId + this.timestampPrefix + highlight.time;
+    this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.embedUrl);
   }
 
 }

@@ -1,0 +1,19 @@
+<div>
+  <div>
+
+    <input #videoId
+      (keyup.enter)="getVideo(videoId.value)"
+      (blur)="getVideo(videoId.value); videoId.value='' "
+      placeholder="Twitch Video Id">
+
+    <button (click)="getVideo(videoId.value)">Load!</button>
+
+  </div>
+  <div>
+    Embedded Twitch Video Here
+  </div>
+  <div>
+  Insert list of timestamps here!
+  {{ highlight }}
+  </div>
+</div>

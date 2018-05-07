@@ -5,34 +5,31 @@ import { DomSanitizer} from '@angular/platform-browser';
 import {SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl} from '@angular/platform-browser';
 import { Highlight } from '../highlightClass';
 
-@Pipe({ name: 'safe' })
-export class SafePipe implements PipeTransform {
-  constructor(protected sanitizer: DomSanitizer) {}
+// @Pipe({ name: 'safe' })
+// export class SafePipe implements PipeTransform {
+//   constructor(protected sanitizer: DomSanitizer) {}
 
-  transform(value: string, type: string = 'resourceUrl'): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
-    switch (type) {
-      case 'html':
-        return this.sanitizer.bypassSecurityTrustHtml(value);
-      case 'style':
-        return this.sanitizer.bypassSecurityTrustStyle(value);
-      case 'script':
-        return this.sanitizer.bypassSecurityTrustScript(value);
-      case 'url':
-        return this.sanitizer.bypassSecurityTrustUrl(value);
-      case 'resourceUrl':
-        return this.sanitizer.bypassSecurityTrustResourceUrl(value);
-      default:
-        throw new Error(`Unable to bypass security for invalid type: ${type}`);
-    }
-  }
-}
+//   transform(value: string, type: string = 'resourceUrl'): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
+//     switch (type) {
+//       case 'html':
+//         return this.sanitizer.bypassSecurityTrustHtml(value);
+//       case 'style':
+//         return this.sanitizer.bypassSecurityTrustStyle(value);
+//       case 'script':
+//         return this.sanitizer.bypassSecurityTrustScript(value);
+//       case 'url':
+//         return this.sanitizer.bypassSecurityTrustUrl(value);
+//       case 'resourceUrl':
+//         return this.sanitizer.bypassSecurityTrustResourceUrl(value);
+//       default:
+//         throw new Error(`Unable to bypass security for invalid type: ${type}`);
+//     }
+//   }
+// }
 
 @Component({
   selector: 'app-highlights',
   templateUrl: './highlights.component.html',
-  // template: `
-  //    <iframe [src]="iframe"></iframe>
-  // `,
   styleUrls: ['./highlights.component.css']
 })
 export class HighlightsComponent implements OnInit {

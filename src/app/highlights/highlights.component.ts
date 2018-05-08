@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HighlightList } from '../highlightList';
-import { Pipe, PipeTransform } from '@angular/core';
+// import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer} from '@angular/platform-browser';
-import {SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl} from '@angular/platform-browser';
+// import {SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl} from '@angular/platform-browser';
 import { Highlight } from '../highlightClass';
+import { HighlightsService } from '../highlights.service';
 
 // @Pipe({ name: 'safe' })
 // export class SafePipe implements PipeTransform {
@@ -37,23 +38,26 @@ export class HighlightsComponent implements OnInit {
   exampleVideoId = '257792165';
   vidSrc; // binded to iframe src
   embedUrlPrefix = 'http://player.twitch.tv/?video=v';
-  embedUrl;
+  embedUrl: string;
   sanitizer: DomSanitizer;
   timestampPrefix = '&time=';
 
 
   // this should contain a list of links to highlights, data should come from highlights service
 
-  highlightList = HighlightList;
+  highlightList: Highlight[];
 
-  constructor(private san: DomSanitizer) {
+  constructor(private san: DomSanitizer, private highlightsService: HighlightsService) {
     this.sanitizer = san;
     this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl('http://player.twitch.tv');
   }
 
-  ngOnInit() {  }
+  ngOnInit() { this.getHighlights(); }
 
-
+  getHighlights(): void {
+    // this.highlightList = this.highlightsService.getHighlights();
+    this.highlightsService.getHighlights().subscribe(highlights => this.highlightList = highlights);
+  }
 
   getVideo(videoId: string) {
     if (videoId.length > 0) {
@@ -61,7 +65,7 @@ export class HighlightsComponent implements OnInit {
       this.embedUrl = this.embedUrlPrefix + videoId;
 
       this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.embedUrl);
-      // Async have service check if chat log exists, if not pull it. Load embedded video.
+      // Async have service check if chat log exists locally, if not pull it. Load embedded video.
       // Then process chat in the background
     }
   }

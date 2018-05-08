@@ -1,4 +1,10 @@
 <div>
+  <mat-toolbar color="primary">
+      <span><mat-icon>mood</mat-icon></span>
+
+      <span>Yay, Material in Angular 2!</span>
+
+  </mat-toolbar>
   <div>
 
     <input #videoId
@@ -6,7 +12,7 @@
       (blur)="getVideo(videoId.value); videoId.value='' "
       placeholder="Twitch Video Id">
 
-    <button (click)="getVideo(videoId.value)">Load!</button>
+    <button mat-fab (click)="getVideo(videoId.value)">Load!</button>
 
   </div>
   <div>

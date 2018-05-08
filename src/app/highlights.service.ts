@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Highlight } from './highlightClass';
+import { HighlightList } from './highlightList';
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,4 +15,8 @@ export class HighlightsService {
   // This should be done async, show loading area on view while waiting
 
   constructor() { }
+
+  getHighlights(): Observable<Highlight[]> {
+    return of(HighlightList);
+  }
 }

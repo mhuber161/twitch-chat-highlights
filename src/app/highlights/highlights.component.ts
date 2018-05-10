@@ -87,6 +87,11 @@ export class HighlightsComponent implements OnInit {
     // getHighlights(videoId)
   }
 
+  // setup single page mean stack app:
+  //    https://scotch.io/tutorials/creating-a-single-page-todo-app-with-node-and-angular#frontend-application-with-angular
+
+  // https://www.sitepoint.com/mean-stack-angular-2-angular-cli/
+
   selectHighlight(highlight: Highlight) {
     this.embedUrl = this.embedUrlPrefix + highlight.videoId + this.timestampPrefix + highlight.time;
     this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.embedUrl);

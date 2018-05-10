@@ -56,21 +56,22 @@ export class HighlightsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getHighlights();
+    // this.getHighlights();
     this.getChatlog();
   }
 
-  getHighlights(): void {
-    // this.highlightList = this.highlightsService.getHighlights();
-    this.highlightsService.getHighlights('example-videoId').subscribe(highlights => this.highlightList = highlights);
+  getHighlights(videoId: string): void {
+      // this.highlightList = this.highlightsService.getHighlights();
+      this.highlightsService.getHighlights('example-videoId').subscribe(highlights => this.highlightList = highlights);
   }
 
-  getChatlog() {
-    this.highlightsService.getChatlog('').subscribe(chatlog => this.loadHighlights(chatlog));
-  }
-
-  loadHighlights(chat: Chatlog) {
-
+  getChatlog(videoId: string) {
+    const file = videoId + '.log';
+    if (true) { // if <videoId>.log does not exist in chat-logs folder, then pull logs and create it
+      this.highlightsService.tempChatArray = [];
+      this.highlightsService.getLogJson(this.exampleVideoId, null).subscribe(
+        chat => this.highlightsService.loadLogJson(chat, this.exampleVideoId));
+    }
   }
 
   getVideo(videoId: string) {
@@ -82,6 +83,8 @@ export class HighlightsComponent implements OnInit {
       // Async have service check if chat log exists locally, if not pull it. Load embedded video.
       // Then process chat in the background
     }
+
+    // getHighlights(videoId)
   }
 
   selectHighlight(highlight: Highlight) {

@@ -19,6 +19,8 @@ export class HighlightsService {
   // r = requests.get('https://api.twitch.tv/kraken/videos/257792165/comments?content_offset_seconds=0',
       // headers={"Client-ID": "oe92qc609eaxxhoh4h5s06pvz7gd9l", "Accept": "application/vnd.twitchtv.v5+json"})
 
+  tempChatArray: string[];
+
   httpOptions = {
     headers: new HttpHeaders({
       'Client-ID':  'oe92qc609eaxxhoh4h5s06pvz7gd9l',
@@ -44,5 +46,22 @@ export class HighlightsService {
 
   getChatlog(videoId: string): Observable<Chatlog> {
     return this.http.get<Chatlog>(this.twitchChatUrl, this.httpOptions);
+  }
+
+
+
+
+  getLogJson(videoId: string, next: string): Observable<Chatlog> {
+    return this.http.get<Chatlog>(this.twitchChatUrl, this.httpOptions);
+  }
+
+  loadLogJson(chat: Chatlog, videoId: string) {
+    for (const comment of chat.comments) {
+      this.tempChatArray.push(comment.message.body);
+    }
+
+    if (chat._next.length > 0) {
+      this.getLogJson('', chat._next).subscribe(chatlog => this.loadLogJson(chatlog, videoId));
+    }
   }
 }

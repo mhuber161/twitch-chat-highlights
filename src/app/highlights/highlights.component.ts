@@ -5,6 +5,8 @@ import { DomSanitizer} from '@angular/platform-browser';
 // import {SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl} from '@angular/platform-browser';
 import { Highlight } from '../highlightClass';
 import { HighlightsService } from '../highlights.service';
+import { Chatlog } from '../chat-objects/chatlog';
+
 
 // @Pipe({ name: 'safe' })
 // export class SafePipe implements PipeTransform {
@@ -41,6 +43,7 @@ export class HighlightsComponent implements OnInit {
   embedUrl: string;
   sanitizer: DomSanitizer;
   timestampPrefix = '&time=';
+  chatlog: Chatlog;
 
 
   // this should contain a list of links to highlights, data should come from highlights service
@@ -52,11 +55,22 @@ export class HighlightsComponent implements OnInit {
     this.vidSrc = this.sanitizer.bypassSecurityTrustResourceUrl('http://player.twitch.tv');
   }
 
-  ngOnInit() { this.getHighlights(); }
+  ngOnInit() {
+    this.getHighlights();
+    this.getChatlog();
+  }
 
   getHighlights(): void {
     // this.highlightList = this.highlightsService.getHighlights();
-    this.highlightsService.getHighlights().subscribe(highlights => this.highlightList = highlights);
+    this.highlightsService.getHighlights('example-videoId').subscribe(highlights => this.highlightList = highlights);
+  }
+
+  getChatlog() {
+    this.highlightsService.getChatlog('').subscribe(chatlog => this.loadHighlights(chatlog));
+  }
+
+  loadHighlights(chat: Chatlog) {
+
   }
 
   getVideo(videoId: string) {

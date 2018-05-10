@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HighlightsComponent } from './highlights/highlights.component';
 import { MatButtonModule, MatCheckboxModule, MatListModule, MatToolbarModule, MatIconModule } from '@angular/material';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
@@ -11,11 +13,12 @@ import { MatButtonModule, MatCheckboxModule, MatListModule, MatToolbarModule, Ma
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     MatButtonModule,
     MatCheckboxModule,
     MatListModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

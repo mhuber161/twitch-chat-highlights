@@ -5,15 +5,7 @@ import { HighlightList } from './highlightList';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Chatlog } from './chat-objects/chatlog';
 
-export class ChatMessage {
-  time: number;
-  text: string;
 
-  constructor(time: number, text: string) {
-    this.time = time;
-    this.text = text;
-  }
-}
 
 
 @Injectable({
@@ -29,14 +21,15 @@ export class HighlightsService {
   // r = requests.get('https://api.twitch.tv/kraken/videos/257792165/comments?content_offset_seconds=0',
       // headers={"Client-ID": "oe92qc609eaxxhoh4h5s06pvz7gd9l", "Accept": "application/vnd.twitchtv.v5+json"})
 
-  chatMessageArray: ChatMessage[];
-
   clientId = 'oe92qc609eaxxhoh4h5s06pvz7gd9l';
 
   headers;
 
+  private twitchChatUrlPrefix = 'https://api.twitch.tv/kraken/videos/';
+  private twitchChatUrlSuffix = '/comments';
+  private twitchChatUrlInitial = '?content_offset_seconds=0';
+  private twitchChatUrlCursor = '?cursor=';
 
-  private twitchChatUrl = 'https://api.twitch.tv/kraken/videos/257792165/comments?content_offset_seconds=0';
   private chatLog: Observable<Chatlog>;
 
   constructor(private http: HttpClient) { }
@@ -52,7 +45,13 @@ export class HighlightsService {
   }
 
   getLogJson(videoId: string, next: string): Observable<HttpResponse<Chatlog>> {
-    return this.http.get<Chatlog>(this.twitchChatUrl, {
+    let url = '';
+    if (next == null) {
+      url = this.twitchChatUrlPrefix + videoId + this.twitchChatUrlSuffix + this.twitchChatUrlInitial;
+    } else {
+      url = this.twitchChatUrlPrefix + videoId + this.twitchChatUrlSuffix + this.twitchChatUrlCursor + next;
+    }
+    return this.http.get<Chatlog>(url, {
       headers: new HttpHeaders({
         'Client-ID':  this.clientId,
         'Accept': 'application/vnd.twitchtv.v5+json'
@@ -61,21 +60,4 @@ export class HighlightsService {
     });
   }
 
-  loadLogJson(chat: Chatlog, videoId: string) {
-    for (const comment of chat.comments) {
-      this.chatMessageArray.push(new ChatMessage(2, comment.message.body));
-    }
-
-    if (chat._next.length > 0) {
-      this.getLogJson(videoId, chat._next).subscribe(resp => {
-        const keys = resp.headers.keys();
-        this.headers = keys.map(key =>
-        `${key}: ${resp.headers.get(key)}`);
-
-        this.loadLogJson(resp.body, videoId);
-      });
-    } else {
-      // Done pulling chat from server, parse array for highlights
-    }
-  }
 }

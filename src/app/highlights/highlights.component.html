@@ -29,7 +29,7 @@
   <div>
     <ul class="highlightList">
       <li *ngFor="let highlight of highlightList">
-        {{ highlight.score }}, {{highlight.time}}, <button (click)="selectHighlight(highlight)">Load!</button>
+        Score: {{ highlight.score }}, Time: {{highlight.time}}, Text: {{highlight.text}} <button (click)="selectHighlight(highlight)">Load!</button>
       </li>
     </ul>
   </div>

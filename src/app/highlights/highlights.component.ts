@@ -1,34 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HighlightList } from '../highlightList';
-// import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer} from '@angular/platform-browser';
-// import {SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl} from '@angular/platform-browser';
 import { Highlight } from '../highlightClass';
 import { HighlightsService } from '../highlights.service';
 import { Chatlog } from '../chat-objects/chatlog';
 
-
-// @Pipe({ name: 'safe' })
-// export class SafePipe implements PipeTransform {
-//   constructor(protected sanitizer: DomSanitizer) {}
-
-//   transform(value: string, type: string = 'resourceUrl'): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
-//     switch (type) {
-//       case 'html':
-//         return this.sanitizer.bypassSecurityTrustHtml(value);
-//       case 'style':
-//         return this.sanitizer.bypassSecurityTrustStyle(value);
-//       case 'script':
-//         return this.sanitizer.bypassSecurityTrustScript(value);
-//       case 'url':
-//         return this.sanitizer.bypassSecurityTrustUrl(value);
-//       case 'resourceUrl':
-//         return this.sanitizer.bypassSecurityTrustResourceUrl(value);
-//       default:
-//         throw new Error(`Unable to bypass security for invalid type: ${type}`);
-//     }
-//   }
-// }
 
 @Component({
   selector: 'app-highlights',
@@ -57,21 +33,14 @@ export class HighlightsComponent implements OnInit {
 
   ngOnInit() {
     // this.getHighlights();
-    this.getChatlog();
-  }
-
-  getHighlights(videoId: string): void {
-      // this.highlightList = this.highlightsService.getHighlights();
-      this.highlightsService.getHighlights('example-videoId').subscribe(highlights => this.highlightList = highlights);
+    this.getChatlog(this.exampleVideoId);
   }
 
   getChatlog(videoId: string) {
-    const file = videoId + '.log';
-    if (true) { // if <videoId>.log does not exist in chat-logs folder, then pull logs and create it
-      this.highlightsService.tempChatArray = [];
-      this.highlightsService.getLogJson(this.exampleVideoId, null).subscribe(
-        chat => this.highlightsService.loadLogJson(chat, this.exampleVideoId));
-    }
+    this.highlightsService.chatMessageArray = [];
+
+    this.highlightsService.getLogJson(videoId, null).subscribe(
+      chat => this.highlightsService.loadLogJson(chat, videoId));
   }
 
   getVideo(videoId: string) {

@@ -1,0 +1,22 @@
+{
+  "name": "twitch-chat-highlights",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhuber161/twitch-chat-highlights.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mhuber161/twitch-chat-highlights/issues"
+  },
+  "homepage": "https://github.com/mhuber161/twitch-chat-highlights#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
